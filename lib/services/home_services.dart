@@ -5,7 +5,6 @@ import 'package:e_commerce/utils/ApiPaths.dart';
 
 abstract class HomeServices {
   Future<UserModel> fetchCurrentUser(String userId);
-
   Future<List<ProductItemModel>> fetchProducts();
 }
 

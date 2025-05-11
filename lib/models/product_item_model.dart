@@ -1,6 +1,26 @@
 import 'package:flutter/cupertino.dart';
 
-enum ProductSizes { S, M, L, XL }
+enum ProductSizes {
+  S,
+  M,
+  L,
+  XL;
+
+  static ProductSizes fromString(String size) {
+    switch (size.toUpperCase()) {
+      case "S":
+        return ProductSizes.S;
+      case "M":
+        return ProductSizes.M;
+      case "L":
+        return ProductSizes.L;
+      case "XL":
+        return ProductSizes.XL;
+      default:
+        return ProductSizes.M;
+    }
+  }
+}
 
 class ProductItemModel {
   final String? productId;
@@ -55,7 +75,7 @@ class ProductItemModel {
     };
   }
 
-  static ProductItemModel fromMap(Map<String, dynamic> data,String id) {
+  static ProductItemModel fromMap(Map<String, dynamic> data, [String? id]) {
     return ProductItemModel(
       productId: id,
       imgPath: data["imgPath"],

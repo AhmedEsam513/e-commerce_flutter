@@ -19,8 +19,19 @@ final class AuthError extends AuthState{
 
 }
 
+//<< NoUserFoundState >> will be emitted in the start of the app if the user
+// is not logged in to move him to log in page
+final class NoUserFoundState extends AuthState{}
+
 // << Log out State >>
 
 final class LoggingOut extends AuthState{}
 final class LoggedOut extends AuthState{}
 final class LogOutError extends AuthState{}
+
+final class ProfileLoading extends AuthState{}
+final class ProfileLoaded extends AuthState{
+  final UserModel userData;
+  ProfileLoaded(this.userData);
+}
+final class ProfileError extends AuthState{}

@@ -13,7 +13,8 @@ class ProfilePage extends StatelessWidget {
     final deviceSize = MediaQuery.of(context).size;
 
     final authCubit = BlocProvider.of<AuthCubit>(context);
-    authCubit.getUser();
+    //authCubit.getUser();
+    authCubit.fetchProfile();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -21,8 +22,8 @@ class ProfilePage extends StatelessWidget {
         child: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: deviceSize.width * 0.05,
-                vertical: deviceSize.height * 0.04),
+                horizontal: deviceSize.width * 0.04,
+                vertical: deviceSize.height * 0.025),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -32,17 +33,16 @@ class ProfilePage extends StatelessWidget {
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: deviceSize.height * 0.04),
-                SizedBox(width: deviceSize.width * 0.04),
                 BlocBuilder<AuthCubit, AuthState>(
                   bloc: authCubit,
-                  buildWhen: (previous, current) => current is AuthLoaded,
+                  buildWhen: (previous, current) => current is ProfileLoaded,
                   builder: (context, state) {
-                    if (state is AuthLoaded) {
+                    if (state is ProfileLoaded) {
                       return Row(
                         children: [
                           CircleAvatar(
                             radius: 40,
-                            child:  Text(
+                            child: Text(
                               "${state.userData.firstName[0]}${state.userData.lastName[0]}",
                               style: themeData.textTheme.titleLarge!
                                   .copyWith(fontWeight: FontWeight.bold),
@@ -69,6 +69,8 @@ class ProfilePage extends StatelessWidget {
                           ),
                         ],
                       );
+                    } else if (state is ProfileLoading) {
+                      return Center(child: CircularProgressIndicator());
                     } else {
                       return Center(child: Text("Something went wrong"));
                     }

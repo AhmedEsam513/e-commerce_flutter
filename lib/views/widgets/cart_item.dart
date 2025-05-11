@@ -15,7 +15,7 @@ class CartItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
     final deviceSize = MediaQuery.of(context).size;
-    final product = cartItem.item;
+    final product = cartItem.product;
     final cartCubit = BlocProvider.of<CartCubit>(context);
 
     return Padding(

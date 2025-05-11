@@ -7,10 +7,10 @@ final class CartInitial extends CartState {}
 final class CartLoading extends CartState {}
 
 final class CartLoaded extends CartState {
-  List<CartItemModel> dummyList;
+  List<CartItemModel> cartList;
   double totalAmount;
 
-  CartLoaded({required this.dummyList,required this.totalAmount});
+  CartLoaded({required this.cartList,required this.totalAmount});
 }
 final class CartEmptyState extends CartState {}
 

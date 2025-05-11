@@ -1,5 +1,4 @@
 import 'package:e_commerce/utils/app_router.dart';
-import 'package:e_commerce/utils/app_routes.dart';
 import 'package:e_commerce/view_models/auth_cubit/auth_cubit.dart';
 import 'package:e_commerce/views/pages/bottom_navbar.dart';
 import 'package:e_commerce/views/pages/loading_page.dart';
@@ -32,7 +31,8 @@ class MyApp extends StatelessWidget {
           buildWhen: (previous, current) =>
               current is AuthLoaded ||
               current is AuthError ||
-              current is AuthInitial,
+              current is AuthLoading ||
+              current is NoUserFoundState,
           builder: (context, state) {
             return MaterialApp(
               debugShowCheckedModeBanner: false,
@@ -43,7 +43,11 @@ class MyApp extends StatelessWidget {
               ),
               //home: const BottomNavbar(),
               //initialRoute: AppRoutes.logIn,
-              home:  state is AuthLoaded ? BottomNavbar() : LoginPage(),
+              home: state is AuthLoaded
+                  ? BottomNavbar()
+                  : state is AuthLoading
+                      ? LoadingPage()
+                      : LoginPage(),
               onGenerateRoute: AppRouter.onGenerateRoute,
             );
           },

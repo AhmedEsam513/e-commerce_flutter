@@ -28,7 +28,6 @@ class _LoginPageState extends State<LoginPage> {
 
     final authCubit = BlocProvider.of<AuthCubit>(context);
 
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -78,11 +77,9 @@ class _LoginPageState extends State<LoginPage> {
                         validator: (userInput) {
                           if (userInput == null || userInput.isEmpty) {
                             return "Please Enter Your Password";
-                          }
-                          else if (userInput.length < 8) {
+                          } else if (userInput.length < 8) {
                             return "Password must be at least 8 characters";
-                          }
-                          else {
+                          } else {
                             return null;
                           }
                         },
@@ -110,18 +107,21 @@ class _LoginPageState extends State<LoginPage> {
                       current is AuthLoaded || current is AuthError,
                   listener: (context, state) {
                     if (state is AuthLoaded) {
-                      debugPrint("i will navigate to bottom navbar");
-                      Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.bottomNavbar,(route)=>false);
-                      debugPrint("i navigated to bottom navbar");
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          AppRoutes.bottomNavbar, (route) => false);
                     } else if (state is AuthError) {
                       ScaffoldMessenger.of(context)
                           .showSnackBar(SnackBar(content: Text(state.message)));
                     }
                   },
-                  buildWhen: (previous, current) => current is AuthLoading||current is AuthError||current is AuthLoaded,
+                  buildWhen: (previous, current) =>
+                      current is AuthLoading ||
+                      current is AuthError ||
+                      current is AuthLoaded ||
+                      current is LoggedOut,
                   builder: (context, state) {
                     if (state is AuthLoading) {
-                      return MainButton(onPressed: (){});
+                      return MainButton(onPressed: () {});
                     }
 
                     return MainButton(

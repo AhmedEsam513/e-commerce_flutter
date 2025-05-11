@@ -16,7 +16,11 @@ class ProductItem extends StatelessWidget {
         height: constraints.maxHeight,
         width: constraints.maxWidth,
         child: InkWell(
-          onTap: (){Navigator.of(context,rootNavigator: true).pushNamed(AppRoutes.productDetails,arguments: product.productId);},
+          onTap: () {
+            Navigator.of(context, rootNavigator: true).pushNamed(
+                AppRoutes.productDetails,
+                arguments: product.productId);
+          },
           child: Column(
             //mainAxisSize: MainAxisSize.min,
             children: [
@@ -44,7 +48,7 @@ class ProductItem extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: constraints.maxHeight*0.01),
+              SizedBox(height: constraints.maxHeight * 0.01),
               Text(
                 product.name,
                 style: themeData.textTheme.titleMedium!

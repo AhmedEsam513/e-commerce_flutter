@@ -4,8 +4,7 @@ import 'package:e_commerce/view_models/product_details_cubit/product_details_cub
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-Widget productDetailsWidget(
-    BuildContext context, int productIndex, ProductItemModel product) {
+Widget productDetailsWidget(BuildContext context, ProductItemModel product) {
   final themeData = Theme.of(context);
   final deviceSize = MediaQuery.of(context).size;
   final cubit = BlocProvider.of<ProductDetailsCubit>(context);
@@ -14,10 +13,7 @@ Widget productDetailsWidget(
     child: Stack(
       children: [
         // Image
-        Container(
-          //height: double.infinity,
-          child: Image.asset(product.imgPath),
-        ),
+        Image.asset(product.imgPath),
 
         //Scrollable Column
         SingleChildScrollView(
@@ -58,7 +54,7 @@ Widget productDetailsWidget(
                               SizedBox(height: deviceSize.height * 0.005),
                             ],
                           ),
-                          quantityBlocBuilder(productIndex, product)
+                          quantityBlocBuilder(1, product)
                         ],
                       ),
                       Row(
@@ -158,9 +154,9 @@ Widget productDetailsWidget(
 }
 
 class ProductDetails extends StatelessWidget {
-  final int productIndex;
+  final String productId;
 
-  const ProductDetails({super.key, required this.productIndex});
+  const ProductDetails({super.key, required this.productId});
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +164,7 @@ class ProductDetails extends StatelessWidget {
     final deviceSize = MediaQuery.of(context).size;
     final cubit = BlocProvider.of<ProductDetailsCubit>(context);
 
-    cubit.getProductDetails(productIndex);
+    cubit.getProductDetails(productId);
 
     return Scaffold(
       backgroundColor: Colors.grey[200],
@@ -182,8 +178,6 @@ class ProductDetails extends StatelessWidget {
           },
           icon: Icon(Icons.arrow_back),
         ),
-        //title: Text("Product Details"),
-        centerTitle: true,
         actions: [
           IconButton(
             onPressed: () {},
@@ -206,7 +200,7 @@ class ProductDetails extends StatelessWidget {
             final product = state.product;
             return Column(
               children: [
-                productDetailsWidget(context, productIndex, product),
+                productDetailsWidget(context, product),
                 Container(
                   decoration: BoxDecoration(color: Colors.white),
                   padding:
@@ -233,7 +227,8 @@ class ProductDetails extends StatelessWidget {
                         bloc: cubit,
                         buildWhen: (previous, current) =>
                             current is AddedToCartState ||
-                            current is AddingToCartState,
+                            current is AddingToCartState ||
+                            current is AddToCartErrorState,
                         builder: (context, state) {
                           if (state is AddingToCartState) {
                             return Padding(
@@ -245,29 +240,30 @@ class ProductDetails extends StatelessWidget {
                             );
                           } else if (state is AddedToCartState) {
                             return Container(
-                                padding: EdgeInsets.all(15),
-                                height: 57,
-                                width: 190,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Added to Cart",
-                                    style: themeData.textTheme.titleMedium!
-                                        .copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey,
-                                    ),
+                              padding: EdgeInsets.all(15),
+                              height: 57,
+                              width: 190,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Added to Cart",
+                                  style:
+                                      themeData.textTheme.titleMedium!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey,
                                   ),
-                                ));
+                                ),
+                              ),
+                            );
                           } else if (state is ProductDetailsLoaded) {
                             return InkWell(
                               onTap: () {
                                 // Check if a size is selected
                                 if (cubit.selectedSize != null) {
-                                  cubit.addToCart(productIndex);
+                                  cubit.addToCart(productId);
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
@@ -306,8 +302,9 @@ class ProductDetails extends StatelessWidget {
                               ),
                             );
                           } else {
+                            if (state is AddToCartErrorState) {debugPrint(state.message);}
                             return Center(
-                              child: Text("Error with Cart"),
+                              child: Text("Error with cart"),
                             );
                           }
                         },

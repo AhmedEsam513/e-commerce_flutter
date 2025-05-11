@@ -195,7 +195,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           color: Colors.grey[300],
                         ),
                         child: Image.asset(
-                          state.checkoutList[index].item.imgPath,
+                          state.checkoutList[index].product.imgPath,
                           height: constraints.maxHeight,
                           width: constraints.maxWidth * 0.23,
                         ),
@@ -206,7 +206,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            state.checkoutList[index].item.name,
+                            state.checkoutList[index].product.name,
                             style: themeData.textTheme.titleMedium!
                                 .copyWith(fontWeight: FontWeight.bold),
                           ),
@@ -219,7 +219,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                     color: Colors.grey),
                               ),
                               Text(
-                                "${state.checkoutList[index].size.name}",
+                                state.checkoutList[index].size.name,
                                 style: themeData.textTheme.titleSmall!
                                     .copyWith(fontWeight: FontWeight.bold),
                               ),
@@ -247,7 +247,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            (state.checkoutList[index].item.price *
+                            (state.checkoutList[index].product.price *
                                     state.checkoutList[index].quantity)
                                 .toString(),
                             style: themeData.textTheme.titleMedium!

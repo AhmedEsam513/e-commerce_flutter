@@ -11,7 +11,7 @@ class CheckoutCubit extends Cubit<CheckoutState> {
     return cart.fold<double>(
         0,
         (combine, element) =>
-            combine + (element.quantity * element.item.price));
+            combine + (element.quantity * element.product.price));
   }
 
   int calculateNumberOfItems() {

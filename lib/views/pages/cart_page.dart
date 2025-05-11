@@ -20,14 +20,18 @@ class _CartPageState extends State<CartPage> {
     final themeData = Theme.of(context);
     final deviceSize = MediaQuery.of(context).size;
 
-    BlocProvider.of<CartCubit>(context).getCart();
-    //debugPrint("I am in build of cart page");
+    final cubit = BlocProvider.of<CartCubit>(context);
+
+    // Fetching the cart items from the FireStore
+    cubit.getCart();
+
 
     return BlocBuilder<CartCubit, CartState>(
-      bloc: BlocProvider.of<CartCubit>(context),
+      bloc: cubit,
       buildWhen: (previous, current) =>
           current is CartLoaded ||
           current is CartLoading ||
+          current is CartError ||
           current is CartEmptyState,
       builder: (context, state) {
         if (state is CartLoading) {
@@ -62,7 +66,7 @@ class _CartPageState extends State<CartPage> {
             ),
           );
         } else if (state is CartLoaded) {
-          final cart = state.dummyList;
+          final cart = state.cartList;
           return Scaffold(
             //extendBodyBehindAppBar: true,
             backgroundColor: Colors.white,
@@ -125,9 +129,10 @@ class _CartPageState extends State<CartPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
-                      left: 20, right: 20, bottom: 90, top: 15),
+                      left: 20, right: 20, bottom: 25, top: 15),
                   child: MainButton(
                     onPressed: () {
+                      cubit.checkOut();
                       Navigator.of(context, rootNavigator: true)
                           .pushNamed(AppRoutes.checkout);
                     },
@@ -161,23 +166,4 @@ Widget totalAndSubtotalWidget(ThemeData themeData,
     ),
   );
 }
-//
-// Align(
-// alignment: Alignment.bottomCenter,
-// child: InkWell(
-// onTap: (){Navigator.of(context,rootNavigator: true).pushNamed(AppRoutes.checkout);},
-// child: Container(
-// height: deviceSize.height * 0.07,
-// width: deviceSize.width * 0.6,
-// decoration: BoxDecoration(
-// color: Colors.deepPurple,
-// borderRadius: BorderRadius.circular(40),
-// ),
-// child: Center(
-// child: Text("Checkout",
-// style: themeData.textTheme.titleMedium!
-//     .copyWith(color: Colors.white)),
-// ),
-// ),
-// ),
-// ),
+

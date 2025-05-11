@@ -55,4 +55,10 @@ class FireStoreServices {
         .map((docSnapshot) => builder(docSnapshot.data(), docSnapshot.id))
         .toList();
   }
+
+  Future<bool> doesCollectionExist(String path) async {
+    final querySnapshot = await _fireStore.collection(path).limit(1).get();
+    return querySnapshot.docs.isNotEmpty;
+  }
+
 }

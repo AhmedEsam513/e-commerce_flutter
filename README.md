@@ -38,3 +38,25 @@ It includes product browsing, user authentication, cart and favorites management
 1. **Clone the repository**
 ```bash
 git clone https://github.com/AhmedEsam513/e-commerce_flutter.git
+```
+
+2. **Install dependencies**
+```bash
+flutter pub get
+```
+
+3. **Set up Firebase**
+
+- Add your Firebase project
+- Enable Authentication and Firestore in the Firebase console
+
+4. **Run the app**
+```bash
+flutter run
+```
+
+---
+
+## 📄 License
+
+This project is for educational and portfolio use only.

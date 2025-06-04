@@ -18,7 +18,9 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoading());
 
     try {
+
       final result = await _authServicesObject.logIn(email, password);
+
       if (result) {
         final currentUserId = _authServicesObject.getCurrentUser()!.uid;
 

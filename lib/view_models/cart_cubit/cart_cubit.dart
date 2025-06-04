@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:e_commerce/models/cart_item_model.dart';
-import 'package:e_commerce/models/product_item_model.dart';
 import 'package:e_commerce/services/auth_services.dart';
 import 'package:e_commerce/services/firestore_services.dart';
 import 'package:e_commerce/utils/ApiPaths.dart';
@@ -33,7 +32,7 @@ class CartCubit extends Cubit<CartState> {
         emit(CartEmptyState());
       } else {
         fetchedCart = await _fireStoreServices.getCollection<CartItemModel>(
-            path: "users/${currentUser.uid}/cart",
+            path: ApiPaths.userCart(currentUser.uid),
             builder: CartItemModel.fromMap);
         final cartTotalAmount = calculateCartTotal();
         emit(CartLoaded(cartList: fetchedCart, totalAmount: cartTotalAmount));

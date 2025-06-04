@@ -9,6 +9,8 @@ It includes product browsing, user authentication, cart and favorites management
 
 Check out the app in action: [Watch the demo video](https://youtube.com/shorts/waKd2x8N94A?si=QAduiFG3VwMXNhTF)
 
+---
+
 ## 🚀 Features
 
 - User Authentication (Login / Sign Up / Logout / Delete Account with Firebase)

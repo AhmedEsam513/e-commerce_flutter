@@ -27,9 +27,9 @@ It includes product browsing, user authentication, cart and favorites management
 
 ## 📱 Screenshots
 
-| Home Page | Product Page | Cart Page | Profile Page |
-|-----------|--------------|-----------|---------------|
-| ![Home](screenshots/home.png) | ![Product](screenshots/product.png) | ![Cart](screenshots/cart.png) | ![Profile](screenshots/profile.png) |
+| Home Page                     | Product Page                        | Cart Page                     | Profile Page                        |
+|-------------------------------|-------------------------------------|-------------------------------|-------------------------------------|
+| ![Home](screenshots/home.jpg) | ![Product](screenshots/product.jpg) | ![Cart](screenshots/cart.jpg) | ![Profile](screenshots/profile.jpg) |
 
 ---
 

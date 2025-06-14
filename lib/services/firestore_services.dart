@@ -7,14 +7,19 @@ class FireStoreServices {
 
   final _fireStore = FirebaseFirestore.instance;
 
-  // setData() used to set new document or update existing document
+  // setData() used to set new document or update existing document (overwrites whole document)
   // must pass a document path(ex: collectionName/documentID ) and data
   Future<void> setData(Map<String, dynamic> data, String path) async {
     await _fireStore.doc(path).set(data);
   }
 
-  Future<void> addData(Map<String, dynamic> data,String path) async {
-    await _fireStore.collection(path).add(data);
+  Future<void> updateData(Map<String, dynamic> data, String docPath) async {
+    await _fireStore.doc(docPath).update(data);
+  }
+
+
+  Future<void> addDocument(Map<String, dynamic> document,String path) async {
+    await _fireStore.collection(path).add(document);
   }
 
 

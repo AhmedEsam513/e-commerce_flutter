@@ -4,7 +4,7 @@ class UserModel {
   final String lastName;
   final String email;
   final String createdAt;
-
+  final List<String>? favorites;
   //final String password;
 
   UserModel({
@@ -13,6 +13,7 @@ class UserModel {
     required this.lastName,
     required this.email,
     required this.createdAt,
+    this.favorites,
     //required this.password,
   });
 
@@ -23,6 +24,7 @@ class UserModel {
       "lastName": lastName,
       "email": email,
       "createdAt": createdAt,
+      "favorites": favorites,
     };
   }
 
@@ -33,6 +35,7 @@ class UserModel {
       lastName: data["lastName"],
       email: data["email"],
       createdAt: data["createdAt"],
+      favorites: List<String>.from(data["favorites"]?? []),
     );
   }
 }

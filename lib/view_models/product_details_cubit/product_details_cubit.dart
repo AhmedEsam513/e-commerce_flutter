@@ -1,9 +1,10 @@
-import 'package:bloc/bloc.dart';
 import 'package:e_commerce/models/cart_item_model.dart';
 import 'package:e_commerce/models/product_item_model.dart';
 import 'package:e_commerce/services/auth_services.dart';
+import 'package:e_commerce/services/hive_services.dart';
 import 'package:e_commerce/services/product_details_services.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'product_details_state.dart';
 
@@ -12,6 +13,7 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
 
   final _productDetailsServices = ProductDetailsServicesImpl();
   final _authServices = AuthServicesImpl();
+  final _hiveServices = HiveServices();
 
   int quantity = 1;
   ProductSizes? selectedSize;
@@ -19,11 +21,37 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
   void getProductDetails(String id) async {
     emit(ProductDetailsLoading());
     try {
-      final fetchedProduct =
-          await _productDetailsServices.fetchProductDetails(id);
-      emit(ProductDetailsLoaded(fetchedProduct));
+
+      // Check if the product is a favorite (using Hive)
+      final isFavorite =_hiveServices.getFavoritesIDs().contains(id);
+
+      // Emit the loaded state with the fetched product and favorite status
+      emit(ProductDetailsLoaded(isFavorite));
     } catch (e) {
       emit(ProductDetailsError(e.toString()));
+    }
+  }
+
+  void favorite(ProductItemModel product) async {
+    try {
+      debugPrint("i will add to hive");
+      await _hiveServices.addFavorite(product);
+      debugPrint("i added to hive and will emit added state");
+      emit(FavoriteAdded());
+
+      debugPrint("i emitted added state");
+      debugPrint("fav length : ${_hiveServices.getFavoritesIDs().length}");
+    } catch (e) {
+      emit(FavoriteError(message: e.toString()));
+    }
+  }
+
+  void unFavorite(ProductItemModel product) async {
+    try {
+      await _hiveServices.deleteFavorite(product);
+      emit(FavoriteRemoved());
+    } catch (e) {
+      emit(FavoriteError(message: e.toString()));
     }
   }
 

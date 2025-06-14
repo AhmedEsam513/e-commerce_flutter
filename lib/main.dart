@@ -1,3 +1,4 @@
+import 'package:e_commerce/services/hive_services.dart';
 import 'package:e_commerce/utils/app_router.dart';
 import 'package:e_commerce/view_models/auth_cubit/auth_cubit.dart';
 import 'package:e_commerce/views/pages/bottom_navbar.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await HiveServices.initHive();
   runApp(const MyApp());
 }
 

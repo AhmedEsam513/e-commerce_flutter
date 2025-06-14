@@ -1,15 +1,22 @@
 import 'package:e_commerce/models/product_item_model.dart';
 import 'package:e_commerce/models/user_model.dart';
 import 'package:e_commerce/services/firestore_services.dart';
+import 'package:e_commerce/services/hive_services.dart';
 import 'package:e_commerce/utils/ApiPaths.dart';
 
 abstract class HomeServices {
   Future<UserModel> fetchCurrentUser(String userId);
   Future<List<ProductItemModel>> fetchProducts();
+  Future<void> addToFavorites(ProductItemModel favoriteProduct);
 }
 
+
 class HomeServicesImpl implements HomeServices {
+
+
   final _fireStoreServices = FireStoreServices.instance;
+  final _hiveServices = HiveServices();
+
 
   @override
   Future<UserModel> fetchCurrentUser(String userId) {
@@ -28,5 +35,18 @@ class HomeServicesImpl implements HomeServices {
     );
 
     return result;
+  }
+
+  @override
+  Future<void> addToFavorites(ProductItemModel favoriteProduct) async {
+    await _hiveServices.addFavorite(favoriteProduct);
+  }
+
+  Future <void> removeFromFavorites(ProductItemModel product) async {
+    await _hiveServices.deleteFavorite(product);
+  }
+
+  List<dynamic> getFavoritesIDs() {
+    return _hiveServices.getFavoritesIDs();
   }
 }

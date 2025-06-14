@@ -1,4 +1,5 @@
 import 'package:e_commerce/view_models/cart_cubit/cart_cubit.dart';
+import 'package:e_commerce/view_models/favorite_cubit/favorite_cubit.dart';
 import 'package:e_commerce/view_models/home_tab_cubit/home_tab_cubit.dart';
 import 'package:e_commerce/views/pages/cart_page.dart';
 import 'package:e_commerce/views/pages/favorites_page.dart';
@@ -20,7 +21,6 @@ class _BottomNavbarState extends State<BottomNavbar> {
 
   @override
   Widget build(BuildContext context) {
-
     final List<Widget> _pages = [
       BlocProvider(
         create: (context) {
@@ -34,7 +34,10 @@ class _BottomNavbarState extends State<BottomNavbar> {
         create: (context) => CartCubit(),
         child: CartPage(),
       ),
-      FavoritesPage(),
+      BlocProvider(
+        create: (context) => FavoriteCubit(),
+        child: FavoritesPage(),
+      ),
       ProfilePage(),
     ];
 

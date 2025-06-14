@@ -29,6 +29,10 @@ class HomeTabView extends StatelessWidget {
         // BlocBuilder
         child: BlocBuilder<HomeTabCubit, HomeTabState>(
           bloc: BlocProvider.of<HomeTabCubit>(context),
+          buildWhen: (previous, current) =>
+              current is HomeTabLoading ||
+              current is HomeTabLoaded ||
+              current is HomeTabError,
           builder: (context, state) {
             if (state is HomeTabLoading) {
               return Center(
@@ -84,9 +88,14 @@ class HomeTabView extends StatelessWidget {
                       mainAxisSpacing: 15,
                     ),
                     itemCount: state.products.length,
-                    itemBuilder: (context, index) => ProductItem(
-                      product: state.products[index],
-                    ),
+                    itemBuilder: (context, index) {
+                      final product = state.products[index];
+                      var isFavorite = state.favoritesIDs.contains(product.productId);
+                      return ProductItem(
+                      product: product,
+                        isFavorite: isFavorite,
+                    );
+                    },
                   )
                 ],
               );
@@ -94,7 +103,7 @@ class HomeTabView extends StatelessWidget {
               return Center(child: Text(state.message));
             } else {
               return Center(
-                child: SizedBox.shrink(),
+                child: Text("Something went wrong"),
               );
             }
           },

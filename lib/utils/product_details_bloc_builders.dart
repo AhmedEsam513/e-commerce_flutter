@@ -27,7 +27,7 @@ BlocBuilder sizeBlocBuilder(double height, double width, ProductSizes size) {
             ),
           ),
         );
-      } else if (state is ProductDetailsLoaded) {
+      } else {
         return Container(
           height: height,
           width: width,
@@ -38,10 +38,6 @@ BlocBuilder sizeBlocBuilder(double height, double width, ProductSizes size) {
           child: Center(
             child: Text(size.name),
           ),
-        );
-      } else {
-        return Center(
-          child: Text("Error with Size"),
         );
       }
     },
@@ -58,14 +54,12 @@ BlocBuilder quantityBlocBuilder(int productIndex, ProductItemModel product) {
           productCubit: BlocProvider.of<ProductDetailsCubit>(context),
           index: 0,
         );
-      } else if (state is ProductDetailsLoaded) {
+      } else {
         return CounterWidget(
           value: 1,
           productCubit: BlocProvider.of<ProductDetailsCubit>(context),
           index: 0,
         );
-      } else {
-        return Center(child: Text("Error with Quantity"));
       }
     },
   );

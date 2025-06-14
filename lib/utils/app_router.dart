@@ -32,11 +32,11 @@ class AppRouter {
         return MaterialPageRoute(builder: (context) => SignUpPage());
 
       case AppRoutes.productDetails:
-        final String productId = settings.arguments as String;
+        final ProductItemModel product = settings.arguments as ProductItemModel;
         return MaterialPageRoute(
           builder: (context) => BlocProvider(
             create: (context) => ProductDetailsCubit(),
-            child: ProductDetails(productId: productId),
+            child: ProductDetails(product: product),
           ),
         );
 

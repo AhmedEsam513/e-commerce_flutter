@@ -4,13 +4,12 @@ sealed class ProductDetailsState {}
 
 final class ProductDetailsInitial extends ProductDetailsState {}
 
-
 class ProductDetailsLoading extends ProductDetailsState {}
 
 class ProductDetailsLoaded extends ProductDetailsState {
-  ProductItemModel product;
+  bool isFavorite;
 
-  ProductDetailsLoaded(this.product);
+  ProductDetailsLoaded(this.isFavorite);
 }
 
 class ProductDetailsError extends ProductDetailsState {
@@ -18,7 +17,6 @@ class ProductDetailsError extends ProductDetailsState {
 
   ProductDetailsError(this.error);
 }
-
 
 // Quantity State
 class QuantityChangedState extends ProductDetailsState {
@@ -34,7 +32,6 @@ class SizeSelectedState extends ProductDetailsState {
   SizeSelectedState({required this.selectedSize});
 }
 
-
 // Add To Cart States
 class AddingToCartState extends ProductDetailsState {}
 
@@ -44,4 +41,15 @@ class AddToCartErrorState extends ProductDetailsState {
   final String message;
 
   AddToCartErrorState(this.message);
+}
+
+// Favorite States
+class FavoriteAdded extends ProductDetailsState {}
+
+class FavoriteRemoved extends ProductDetailsState {}
+
+class FavoriteError extends ProductDetailsState {
+  String message;
+
+  FavoriteError({required this.message});
 }

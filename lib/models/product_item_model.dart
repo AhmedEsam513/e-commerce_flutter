@@ -1,4 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:hive/hive.dart';
+
+part 'product_item_model.g.dart';
 
 enum ProductSizes {
   S,
@@ -22,14 +25,23 @@ enum ProductSizes {
   }
 }
 
+@HiveType(typeId: 0)
 class ProductItemModel {
+  @HiveField(0)
   final String? productId;
+  @HiveField(1)
   final String imgPath;
+  @HiveField(2)
   final bool isFavorite;
+  @HiveField(3)
   final String name;
+  @HiveField(4)
   final String category;
+  @HiveField(5)
   final double price;
+  @HiveField(6)
   final String description;
+  @HiveField(7)
   final double rating;
 
   ProductItemModel({

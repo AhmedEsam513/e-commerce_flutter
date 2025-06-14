@@ -119,7 +119,7 @@ class ProfilePage extends StatelessWidget {
                     } else if (state is LogOutError) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text("Failed"),
+                          content: Text("Failed : ${state.message}"),
                         ),
                       );
                     }

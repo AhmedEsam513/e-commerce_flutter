@@ -9,8 +9,8 @@ final class AuthInitial extends AuthState {}
 final class AuthLoading extends AuthState{}
 
 final class AuthLoaded extends AuthState{
-  final UserModel userData;
-  AuthLoaded({required this.userData});
+  //final UserModel userData;
+  //AuthLoaded({required this.userData});
 }
 
 final class AuthError extends AuthState{
@@ -27,7 +27,10 @@ final class NoUserFoundState extends AuthState{}
 
 final class LoggingOut extends AuthState{}
 final class LoggedOut extends AuthState{}
-final class LogOutError extends AuthState{}
+final class LogOutError extends AuthState{
+  final String message;
+  LogOutError(this.message);
+}
 
 final class ProfileLoading extends AuthState{}
 final class ProfileLoaded extends AuthState{

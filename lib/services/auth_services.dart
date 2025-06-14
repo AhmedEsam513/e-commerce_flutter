@@ -13,6 +13,7 @@ abstract class AuthServices {
 }
 
 class AuthServicesImpl implements AuthServices {
+
   final _authServices = FirebaseAuth.instance;
 
   @override

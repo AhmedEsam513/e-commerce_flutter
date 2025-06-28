@@ -7,7 +7,7 @@ It includes product browsing, user authentication, cart and favorites management
 
 ## 🎥 Demo
 
-Check out the app in action: [Watch the demo video](https://drive.google.com/file/d/1IQ2BsxLrOyLiSbopP3AFqhhs85_xPh1P/view?usp=sharing)
+Check out the app in action: [Watch the demo video](https://drive.google.com/file/d/1OMwMk1KY4quQ_t79yAIklAJt3p9X-CcA/view?usp=sharing)
 
 ---
 
@@ -20,6 +20,7 @@ Check out the app in action: [Watch the demo video](https://drive.google.com/fil
 - State Management using Cubit
 - Firebase Firestore Integration
 - User's favorites managed by Hive
+- User's profile photo uploaded using Cloud Firebase Storage
 
 ---
 
@@ -28,7 +29,8 @@ Check out the app in action: [Watch the demo video](https://drive.google.com/fil
 - Flutter (Dart)
 - State Management (Cubit)
 - Firebase Authentication
-- Cloud Firestore
+- Cloud Firebase Firestore
+- Cloud Firebase Storage
 - Local Storage (Hive)
 
 ---

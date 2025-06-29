@@ -1,6 +1,7 @@
 import 'package:e_commerce/view_models/cart_cubit/cart_cubit.dart';
 import 'package:e_commerce/view_models/favorite_cubit/favorite_cubit.dart';
 import 'package:e_commerce/view_models/home_tab_cubit/home_tab_cubit.dart';
+import 'package:e_commerce/view_models/profile_cubit/profile_bloc.dart';
 import 'package:e_commerce/views/pages/cart_page.dart';
 import 'package:e_commerce/views/pages/favorites_page.dart';
 import 'package:e_commerce/views/pages/home_page.dart';
@@ -38,7 +39,14 @@ class _BottomNavbarState extends State<BottomNavbar> {
         create: (context) => FavoriteCubit(),
         child: FavoritesPage(),
       ),
-      ProfilePage(),
+      BlocProvider(
+        create: (context) {
+          final profileBloc = ProfileBloc();
+          profileBloc.add(FetchProfileEvent());
+          return profileBloc;
+        },
+        child: ProfilePage(),
+      ),
     ];
 
     return Scaffold(

@@ -1,5 +1,6 @@
 import 'package:e_commerce/utils/app_routes.dart';
 import 'package:e_commerce/view_models/auth_cubit/auth_cubit.dart';
+import 'package:e_commerce/view_models/profile_cubit/profile_bloc.dart';
 import 'package:e_commerce/views/widgets/profile_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,9 +13,7 @@ class ProfilePage extends StatelessWidget {
     final themeData = Theme.of(context);
     final deviceSize = MediaQuery.of(context).size;
 
-    final authCubit = BlocProvider.of<AuthCubit>(context);
-    //authCubit.getUser();
-    authCubit.fetchProfile();
+    final profileBloc = BlocProvider.of<ProfileBloc>(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -33,9 +32,10 @@ class ProfilePage extends StatelessWidget {
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: deviceSize.height * 0.04),
-                BlocBuilder<AuthCubit, AuthState>(
-                  bloc: authCubit,
-                  buildWhen: (previous, current) => current is ProfileLoaded,
+                BlocBuilder<ProfileBloc, ProfileState>(
+                  bloc: profileBloc,
+                  buildWhen: (previous, current) =>
+                      current is ProfileLoaded || current is ProfileLoading,
                   builder: (context, state) {
                     if (state is ProfileLoaded) {
                       return Row(
@@ -104,8 +104,8 @@ class ProfilePage extends StatelessWidget {
                 Divider(thickness: 1),
 
 //<<< Log Out >>>
-                BlocConsumer<AuthCubit, AuthState>(
-                  bloc: authCubit,
+                BlocConsumer<ProfileBloc, ProfileState>(
+                  bloc: profileBloc,
                   listenWhen: (previous, current) =>
                       current is LoggedOut || current is LogOutError,
                   listener: (context, state) {
@@ -128,14 +128,18 @@ class ProfilePage extends StatelessWidget {
                     return Column(
                       children: [
                         ProfileListTile(
-                          onTap: authCubit.logOut,
+                          onTap: () {
+                            profileBloc.add(LogOutEvent());
+                          },
                           title: "Log Out",
                           icon: Icons.logout_outlined,
                           isRed: true,
                         ),
                         Divider(thickness: 1),
                         ProfileListTile(
-                          onTap: authCubit.deleteUser,
+                          onTap: () {
+                            profileBloc.add(DeleteUserEvent());
+                          },
                           title: "Delete Account",
                           icon: Icons.delete,
                           isRed: true,

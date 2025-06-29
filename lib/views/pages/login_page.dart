@@ -117,8 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                   buildWhen: (previous, current) =>
                       current is AuthLoading ||
                       current is AuthError ||
-                      current is AuthLoaded ||
-                      current is LoggedOut,
+                      current is AuthLoaded,
                   builder: (context, state) {
                     if (state is AuthLoading) {
                       return MainButton(onPressed: () {});

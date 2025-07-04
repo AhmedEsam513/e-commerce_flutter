@@ -1,7 +1,11 @@
+import 'dart:ffi';
+
+import 'package:e_commerce/models/user_model.dart';
 import 'package:e_commerce/utils/app_routes.dart';
 import 'package:e_commerce/view_models/auth_cubit/auth_cubit.dart';
 import 'package:e_commerce/view_models/profile_cubit/profile_bloc.dart';
 import 'package:e_commerce/views/widgets/profile_list_tile.dart';
+import 'package:e_commerce/views/widgets/profile_photo_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,8 +19,9 @@ class ProfilePage extends StatelessWidget {
 
     final profileBloc = BlocProvider.of<ProfileBloc>(context);
 
+    late UserModel user;
+
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -32,24 +37,51 @@ class ProfilePage extends StatelessWidget {
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: deviceSize.height * 0.04),
-                BlocBuilder<ProfileBloc, ProfileState>(
-                  bloc: profileBloc,
-                  buildWhen: (previous, current) =>
-                      current is ProfileLoaded || current is ProfileLoading,
-                  builder: (context, state) {
-                    if (state is ProfileLoaded) {
-                      return Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 40,
-                            child: Text(
-                              "${state.userData.firstName[0]}${state.userData.lastName[0]}",
-                              style: themeData.textTheme.titleLarge!
-                                  .copyWith(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          SizedBox(width: deviceSize.width * 0.03),
-                          Column(
+                Row(
+                  children: [
+                    BlocConsumer<ProfileBloc, ProfileState>(
+                        buildWhen: (previous, current) =>
+                            current is ProfileLoaded ||
+                            current is ProfilePhotoLoaded ||
+                            current is ProfilePhotoLoading ||
+                            current is ProfileLoading,
+                        builder: (context, state) {
+                          if (state is ProfileLoaded) {
+                            user = state.userData;
+                            return ProfilePhotoWidget(
+                              user: state.userData,
+                            );
+                          } else if (state is ProfilePhotoLoaded) {
+                            user = state.userData;
+                            return ProfilePhotoWidget(
+                              user: state.userData,
+                            );
+                          } else {
+                            return CircleAvatar(
+                              radius: deviceSize.width * 0.14,
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        },
+                        listenWhen: (previous, current) =>
+                            current is ProfilePhotoError,
+                        listener: (context, state) {
+                          if (state is ProfilePhotoError) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(state.message),
+                              ),
+                            );
+                          }
+                        }),
+                    SizedBox(width: deviceSize.width * 0.025),
+                    BlocConsumer<ProfileBloc, ProfileState>(
+                      bloc: profileBloc,
+                      buildWhen: (previous, current) =>
+                          current is ProfileLoaded || current is ProfileLoading,
+                      builder: (context, state) {
+                        if (state is ProfileLoaded) {
+                          return Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -66,19 +98,41 @@ class ProfilePage extends StatelessWidget {
                                         color: Colors.grey),
                               ),
                             ],
-                          ),
-                        ],
-                      );
-                    } else if (state is ProfileLoading) {
-                      return Center(child: CircularProgressIndicator());
-                    } else {
-                      return Center(child: Text("Something went wrong"));
-                    }
-                  },
+                          );
+                        } else {
+                          return Row(
+                            children: [
+                              SizedBox(width: deviceSize.width * 0.25),
+                              CircularProgressIndicator(),
+                            ],
+                          );
+                        }
+                      },
+                      listenWhen: (current, previous) =>
+                          current is ProfileError,
+                      listener: (context, state) {
+                        if (state is ProfileError) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Failed : ${state.message}"),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ],
                 ),
                 SizedBox(height: deviceSize.height * 0.05),
                 ProfileListTile(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushNamed(AppRoutes.editProfile,
+                        arguments: {
+                          "bloc": profileBloc,
+                          "userData": user
+                        }).then((value) {
+                      profileBloc.add(FetchProfileEvent());
+                    });
+                  },
                   title: "Edit Profile",
                   icon: Icons.edit_outlined,
                   //subTitle: "Photo, Name, Email",

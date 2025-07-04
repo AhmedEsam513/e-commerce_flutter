@@ -2,9 +2,11 @@ import 'package:e_commerce/main.dart';
 import 'package:e_commerce/models/product_item_model.dart';
 import 'package:e_commerce/utils/app_routes.dart';
 import 'package:e_commerce/view_models/product_details_cubit/product_details_cubit.dart';
+import 'package:e_commerce/view_models/profile_cubit/profile_bloc.dart';
 import 'package:e_commerce/views/pages/add_new_card_page.dart';
 import 'package:e_commerce/views/pages/bottom_navbar.dart';
 import 'package:e_commerce/views/pages/checkout_page.dart';
+import 'package:e_commerce/views/pages/edit_profile_page.dart';
 import 'package:e_commerce/views/pages/login_page.dart';
 import 'package:e_commerce/views/pages/product_details.dart';
 import 'package:e_commerce/views/pages/sign_up_page.dart';
@@ -15,7 +17,7 @@ class AppRouter {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case AppRoutes.appStart:
-        return MaterialPageRoute(builder: (context)=> MyApp());
+        return MaterialPageRoute(builder: (context) => MyApp());
       case AppRoutes.bottomNavbar:
         return MaterialPageRoute(builder: (context) => BottomNavbar());
 
@@ -37,6 +39,14 @@ class AppRouter {
           builder: (context) => BlocProvider(
             create: (context) => ProductDetailsCubit(),
             child: ProductDetails(product: product),
+          ),
+        );
+      case AppRoutes.editProfile:
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider.value(
+            value: args["bloc"] as ProfileBloc,
+            child: EditProfilePage(user: args["userData"]),
           ),
         );
 

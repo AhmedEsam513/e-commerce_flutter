@@ -19,4 +19,26 @@ final class ProfileLoaded extends ProfileState{
   final UserModel userData;
   ProfileLoaded(this.userData);
 }
-final class ProfileError extends ProfileState{}
+final class ProfileError extends ProfileState{
+  final String message;
+  ProfileError(this.message);
+}
+
+
+// << ProfilePhoto States >>
+final class ProfilePhotoLoading extends ProfileState{}
+final class ProfilePhotoLoaded extends ProfileState{
+  final UserModel userData;
+  ProfilePhotoLoaded(this.userData);
+}
+final class ProfilePhotoError extends ProfileState{
+  final String message;
+  ProfilePhotoError(this.message);
+
+}
+
+
+class UserInfoUpdated extends ProfileState{
+  String newName;
+  UserInfoUpdated(this.newName);
+}

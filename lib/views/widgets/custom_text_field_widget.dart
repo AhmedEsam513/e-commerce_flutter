@@ -6,6 +6,7 @@ class CustomTextFieldWidget extends StatefulWidget {
   final String hint;
   final IconData prefixIcon;
   final String? Function(String? value) validator;
+  final void Function(String? value)? onChanged;
   final bool? obscureText;
 
   const CustomTextFieldWidget({
@@ -15,7 +16,8 @@ class CustomTextFieldWidget extends StatefulWidget {
     required this.hint,
     required this.prefixIcon,
     required this.validator,
-    this.obscureText=false,
+    this.obscureText = false,
+    this.onChanged,
   });
 
   @override
@@ -23,7 +25,6 @@ class CustomTextFieldWidget extends StatefulWidget {
 }
 
 class _CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
-
   bool isHidden = true;
 
   void toggleVisibility() {
@@ -50,25 +51,32 @@ class _CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
           controller: widget.controller,
           validator: widget.validator,
           //keyboardType: TextInputType.number,
-          obscureText: widget.obscureText!? isHidden:false,
+          obscureText: widget.obscureText! ? isHidden : false,
           decoration: InputDecoration(
-              hintText: widget.hint,
-              hintStyle: TextStyle(color: Colors.grey),
-              prefixIcon: Icon(widget.prefixIcon),
-              prefixIconColor: Colors.grey,
-              suffixIcon: widget.obscureText!? IconButton(
-                onPressed: toggleVisibility,
-                icon: isHidden? Icon(Icons.visibility_off_outlined):Icon(Icons.visibility_outlined),
-              ):null,
-              fillColor: Colors.grey[200],
-              filled: true,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-                borderSide: BorderSide.none,
-              ),
-              errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(color: Colors.red))),
+            hintText: widget.hint,
+            hintStyle: TextStyle(color: Colors.grey),
+            prefixIcon: Icon(widget.prefixIcon),
+            prefixIconColor: Colors.grey,
+            suffixIcon: widget.obscureText!
+                ? IconButton(
+                    onPressed: toggleVisibility,
+                    icon: isHidden
+                        ? Icon(Icons.visibility_off_outlined)
+                        : Icon(Icons.visibility_outlined),
+                  )
+                : null,
+            fillColor: Colors.grey[200],
+            filled: true,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: BorderSide.none,
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: BorderSide(color: Colors.red),
+            ),
+          ),
+          onChanged: widget.onChanged,
         ),
         SizedBox(
           height: deviceSize.height * 0.03,

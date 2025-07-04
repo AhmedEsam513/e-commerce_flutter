@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatelessWidget {
-
   const HomePage({super.key});
 
   @override
@@ -36,13 +35,15 @@ class HomePage extends StatelessWidget {
               } else if (state is HomeTabLoaded) {
                 return Row(
                   children: [
-                    //Image.asset("assets/images/home_page/Ahmed_Esam.jpg"),
                     CircleAvatar(
                       radius: 30,
-                      child: Text(
-                          "${state.user.firstName[0]}${state.user.lastName[0]}"),
-                      // backgroundImage:
-                      //     AssetImage("assets/images/home_page/Ahmed_Esam.jpg"),
+                      backgroundImage: state.user.profilePhotoUrl != null
+                          ? NetworkImage(state.user.profilePhotoUrl!)
+                          : null,
+                      child: state.user.profilePhotoUrl == null
+                          ? Text(
+                              "${state.user.firstName[0]}${state.user.lastName[0]}")
+                          : null,
                     ),
                     SizedBox(width: deviceSize.width * 0.02),
                     Column(

@@ -4,4 +4,6 @@ class ApiPaths{
   static String products() => "products/";
   static String product(String productId) => "products/$productId";
   static String userCart(String uid) => "users/$uid/cart/";
+
+  static String userProfilePhoto(String uid) => "users/$uid/profile.jpg";
 }

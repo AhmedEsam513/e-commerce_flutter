@@ -7,6 +7,7 @@ class AppRoutes {
   static const String addCard = "/add-card";
   static const String logIn = "/log-in";
   static const String signUp = "/sign-up";
+  static const String editProfile = "/edit-profile";
 
 
 

@@ -5,6 +5,7 @@ class UserModel {
   final String email;
   final String createdAt;
   final List<String>? favorites;
+  final String? profilePhotoUrl;
   //final String password;
 
   UserModel({
@@ -14,6 +15,7 @@ class UserModel {
     required this.email,
     required this.createdAt,
     this.favorites,
+    this.profilePhotoUrl,
     //required this.password,
   });
 
@@ -25,6 +27,7 @@ class UserModel {
       "email": email,
       "createdAt": createdAt,
       "favorites": favorites,
+      "profilePhotoUrl": profilePhotoUrl,
     };
   }
 
@@ -36,6 +39,7 @@ class UserModel {
       email: data["email"],
       createdAt: data["createdAt"],
       favorites: List<String>.from(data["favorites"]?? []),
+      profilePhotoUrl: data["profilePhotoUrl"]
     );
   }
 }

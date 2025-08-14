@@ -9,7 +9,7 @@ class PaymentCardCubit extends Cubit<PaymentCardState> {
   void addCard(PaymentCardModel newCard) {
     emit(PaymentCardAdding());
     paymentCards.add(newCard);
-    Future.delayed(Duration(seconds: 10), () {
+    Future.delayed(Duration(seconds: 5), () {
       emit(PaymentCardAdded());
     });
   }

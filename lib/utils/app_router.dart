@@ -2,7 +2,7 @@ import 'package:e_commerce/main.dart';
 import 'package:e_commerce/models/product_item_model.dart';
 import 'package:e_commerce/utils/app_routes.dart';
 import 'package:e_commerce/view_models/product_details_cubit/product_details_cubit.dart';
-import 'package:e_commerce/view_models/profile_cubit/profile_bloc.dart';
+import 'package:e_commerce/view_models/profile_bloc/profile_bloc.dart';
 import 'package:e_commerce/views/pages/add_new_card_page.dart';
 import 'package:e_commerce/views/pages/bottom_navbar.dart';
 import 'package:e_commerce/views/pages/checkout_page.dart';

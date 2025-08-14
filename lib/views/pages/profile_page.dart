@@ -1,9 +1,6 @@
-import 'dart:ffi';
-
 import 'package:e_commerce/models/user_model.dart';
 import 'package:e_commerce/utils/app_routes.dart';
-import 'package:e_commerce/view_models/auth_cubit/auth_cubit.dart';
-import 'package:e_commerce/view_models/profile_cubit/profile_bloc.dart';
+import 'package:e_commerce/view_models/profile_bloc/profile_bloc.dart';
 import 'package:e_commerce/views/widgets/profile_list_tile.dart';
 import 'package:e_commerce/views/widgets/profile_photo_widget.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +23,7 @@ class ProfilePage extends StatelessWidget {
         child: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: deviceSize.width * 0.04,
+                horizontal: deviceSize.width * 0.03,
                 vertical: deviceSize.height * 0.025),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,30 +71,35 @@ class ProfilePage extends StatelessWidget {
                             );
                           }
                         }),
-                    SizedBox(width: deviceSize.width * 0.025),
+                    SizedBox(width: deviceSize.width * 0.023),
                     BlocConsumer<ProfileBloc, ProfileState>(
                       bloc: profileBloc,
                       buildWhen: (previous, current) =>
                           current is ProfileLoaded || current is ProfileLoading,
                       builder: (context, state) {
                         if (state is ProfileLoaded) {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "${state.userData.firstName} ${state.userData.lastName}",
-                                style: themeData.textTheme.titleLarge!
-                                    .copyWith(fontWeight: FontWeight.bold),
+                          return SizedBox(
+                            width: deviceSize.width*0.62,
+                            child: FittedBox(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${state.userData.firstName} ${state.userData.lastName}",
+                                    style: themeData.textTheme.titleLarge!
+                                        .copyWith(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    state.userData.email,
+                                    style: themeData.textTheme.titleMedium!
+                                        .copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.grey),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                state.userData.email,
-                                style: themeData.textTheme.titleMedium!
-                                    .copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.grey),
-                              ),
-                            ],
+                            ),
                           );
                         } else {
                           return Row(

@@ -1,26 +1,27 @@
 import 'package:e_commerce/models/user_model.dart';
-import 'package:e_commerce/view_models/profile_cubit/profile_bloc.dart';
+import 'package:e_commerce/view_models/profile_bloc/profile_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfilePhotoWidget extends StatelessWidget {
   final UserModel user;
-  final Function()? onTap;
   final bool isRemovable;
 
   const ProfilePhotoWidget({
     super.key,
     required this.user,
-    this.onTap,
     this.isRemovable = false,
   });
+
 
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
     final deviceSize = MediaQuery.of(context).size;
 
+
     final bloc = BlocProvider.of<ProfileBloc>(context);
+
 
     return Stack(
       alignment: Alignment.center,

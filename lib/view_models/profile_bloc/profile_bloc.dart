@@ -6,7 +6,6 @@ import 'package:e_commerce/services/firestore_services.dart';
 import 'package:e_commerce/services/hive_services.dart';
 import 'package:e_commerce/services/media_services.dart';
 import 'package:e_commerce/utils/ApiPaths.dart';
-import 'package:flutter/rendering.dart';
 import 'package:meta/meta.dart';
 
 part 'profile_event.dart';
@@ -14,7 +13,6 @@ part 'profile_event.dart';
 part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-
   final _authServicesObject = AuthServicesImpl();
   final _fireStoreServices = FireStoreServices.instance;
   final _hiveServices = HiveServices();
@@ -56,7 +54,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(ProfileLoading());
 
       try {
-
         // Get the current user's data from FireStore
         final currentUserData = await _fireStoreServices.getDocument<UserModel>(
           path: ApiPaths.user(_currentUserId),
@@ -65,7 +62,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
         // Emit the ProfileLoaded state with the current user's data
         emit(ProfileLoaded(currentUserData));
-
       } catch (e) {
         emit(ProfileError(e.toString()));
       }
@@ -84,14 +80,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
     /// Update Profile Photo
     on<UpdateProfilePhotoEvent>((event, emit) async {
-
       try {
         // Pick an image from the device
         final picked = await _media.pickImage();
 
         // Check if an image was picked (nullability check)
         if (picked != null) {
-
           emit(ProfilePhotoLoading());
 
           // Upload the image to Firebase Storage
@@ -122,9 +116,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         emit(ProfilePhotoError(e.toString()));
       }
     });
+
     /// Delete Profile Photo
-    on<DeleteProfilePhotoEvent>((event, emit) async{
-      try{
+    on<DeleteProfilePhotoEvent>((event, emit) async {
+      try {
         emit(ProfilePhotoLoading());
 
         // Delete the image from Firebase Storage
@@ -143,13 +138,26 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         );
 
         emit(ProfilePhotoLoaded(newUserData));
-      }catch(e){
+      } catch (e) {
         emit(ProfilePhotoError(e.toString()));
       }
     });
-    /// Update User Info
-    on<UpdateUserInfoEvent>((event,emit){
-      emit(UserInfoUpdated(event.newName));
+
+    /// Change User Info
+    on<ChangeUserInfoEvent>((event, emit) {
+      if ((event.oldFirstName != event.newFirstName) ||
+          (event.oldLastName != event.newLastName)) {
+        emit(UserInfoChanged(event.newFirstName, event.newLastName));
+      } else {
+        emit(UserInfoChangedToOriginal());
+      }
+    });
+
+    on<UpdateUserInfoEvent>((event, emit) {
+      _fireStoreServices.updateData(
+        {"firstName": event.newFirstName, "lastName": event.newLastName},
+        ApiPaths.user(_currentUserId),
+      );
     });
   }
 }

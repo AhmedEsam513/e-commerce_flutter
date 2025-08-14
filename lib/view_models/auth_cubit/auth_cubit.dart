@@ -97,8 +97,6 @@ class AuthCubit extends Cubit<AuthState> {
     final result = _authServicesObject.getCurrentUser();
     if (result != null) {
       try {
-        final currentUserData = await _fireStoreServices.getDocument<UserModel>(
-            path: ApiPaths.user(result.uid), builder: UserModel.fromMap);
         emit(AuthLoaded());
       } catch (e) {
         emit(AuthError(e.toString()));

@@ -1,11 +1,8 @@
-import 'package:e_commerce/models/user_model.dart';
 import 'package:e_commerce/utils/app_routes.dart';
-import 'package:e_commerce/view_models/auth_cubit/auth_cubit.dart';
 import 'package:e_commerce/view_models/auth_cubit/auth_cubit.dart';
 import 'package:e_commerce/views/widgets/custom_text_field_widget.dart';
 import 'package:e_commerce/views/widgets/main_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:string_validator/string_validator.dart';
 

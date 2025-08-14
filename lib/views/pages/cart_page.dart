@@ -1,4 +1,3 @@
-import 'package:e_commerce/models/cart_item_model.dart';
 import 'package:e_commerce/utils/app_routes.dart';
 import 'package:e_commerce/view_models/cart_cubit/cart_cubit.dart';
 import 'package:e_commerce/views/widgets/cart_item.dart';

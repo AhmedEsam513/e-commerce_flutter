@@ -1,4 +1,3 @@
-import 'package:e_commerce/models/user_model.dart';
 import 'package:e_commerce/view_models/home_tab_cubit/home_tab_cubit.dart';
 import 'package:e_commerce/views/widgets/category_tab_view.dart';
 import 'package:e_commerce/views/widgets/home_tab_view.dart';

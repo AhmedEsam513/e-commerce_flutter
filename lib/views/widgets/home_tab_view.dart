@@ -1,9 +1,9 @@
 // Flutter
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 // External Packages
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 // Internal Files
 import 'package:e_commerce/view_models/home_tab_cubit/home_tab_cubit.dart';
@@ -18,7 +18,6 @@ class HomeTabView extends StatelessWidget {
     final deviceSize = MediaQuery.of(context).size;
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
-    final _PageController = PageController();
 
     //BlocProvider
     return Padding(
@@ -41,26 +40,14 @@ class HomeTabView extends StatelessWidget {
             } else if (state is HomeTabLoaded) {
               return Column(
                 children: [
-                  SizedBox(
-                    height: isPortrait ? deviceSize.height * 0.25 : deviceSize.height * 0.7,
-                    child: PageView(
-                      controller: _PageController,
-                      //itemCount: state.banners.length,
-                      children:state.banners,
+                  CarouselSlider(
+                    options: CarouselOptions(
+                      height: deviceSize.height * 0.23,
+                      autoPlay: true,
                     ),
+                    items: state.banners,
                   ),
-                  SizedBox(height: deviceSize.height * 0.01),
-                  SmoothPageIndicator(
-                    controller: _PageController,
-                    count: state.banners.length,
-                    effect: SlideEffect(
-                      activeDotColor: Colors.deepPurple,
-                      dotColor: Colors.grey,
-                      dotHeight: 8,
-                      dotWidth: 8,
-                    ),
-                  ),
-                  SizedBox(height: deviceSize.height * 0.02),
+                  //SizedBox(height: deviceSize.height * 0.02),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -90,11 +77,12 @@ class HomeTabView extends StatelessWidget {
                     itemCount: state.products.length,
                     itemBuilder: (context, index) {
                       final product = state.products[index];
-                      var isFavorite = state.favoritesIDs.contains(product.productId);
+                      var isFavorite =
+                          state.favoritesIDs.contains(product.productId);
                       return ProductItem(
-                      product: product,
+                        product: product,
                         isFavorite: isFavorite,
-                    );
+                      );
                     },
                   )
                 ],
@@ -112,19 +100,3 @@ class HomeTabView extends StatelessWidget {
     );
   }
 }
-
-// FlutterCarousel.builder(
-// itemCount: homeBanners.length,
-// itemBuilder: (context, index, pageViewIndex) => Padding(
-// padding: EdgeInsetsDirectional.only(end: 15),
-// child: homeBanners[index],
-// ),
-// options: FlutterCarouselOptions(
-// height: deviceSize.height * 0.19,
-// controller: FlutterCarouselController(),
-// slideIndicator: CircularWaveSlideIndicator(),
-// indicatorMargin: 20,
-// autoPlay: true,
-// //floatingIndicator: false
-// ),
-// ),

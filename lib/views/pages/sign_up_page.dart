@@ -1,5 +1,5 @@
-import 'package:e_commerce/utils/app_routes.dart';
 import 'package:e_commerce/view_models/auth_cubit/auth_cubit.dart';
+import 'package:e_commerce/views/pages/verify_email_page.dart';
 import 'package:e_commerce/views/widgets/custom_text_field_widget.dart';
 import 'package:e_commerce/views/widgets/main_button.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +68,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           }
                         },
                         prefixIcon: Icons.email_outlined,
-                      ),CustomTextFieldWidget(
+                      ),
+                      CustomTextFieldWidget(
                         controller: _lastNameController,
                         heading: "Last Name",
                         hint: "Enter your Last Name",
@@ -80,7 +81,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           }
                         },
                         prefixIcon: Icons.email_outlined,
-                      ),CustomTextFieldWidget(
+                      ),
+                      CustomTextFieldWidget(
                         controller: _emailController,
                         heading: "Email",
                         hint: "Enter your Email",
@@ -137,11 +139,18 @@ class _SignUpPageState extends State<SignUpPage> {
                 BlocConsumer<AuthCubit, AuthState>(
                   bloc: authCubit,
                   listenWhen: (previous, current) =>
-                      current is AuthLoaded || current is AuthError,
+                      current is SignUpError || current is SignedUp,
                   listener: (context, state) {
-                    if (state is AuthLoaded) {
-                      Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.bottomNavbar,(route)=>false);
-                    } else if (state is AuthError) {
+                    if (state is SignedUp) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => BlocProvider.value(
+                            value: authCubit,
+                            child: VerifyEmailPage(),
+                          ),
+                        ),
+                      );
+                    } else if (state is SignUpError) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(state.message),
@@ -150,18 +159,23 @@ class _SignUpPageState extends State<SignUpPage> {
                     }
                   },
                   buildWhen: (previous, current) =>
-                      current is AuthLoading ||
-                      current is AuthError ||
-                      current is AuthLoaded,
+                      current is SigningUp ||
+                      current is SignUpError ||
+                      current is SignedUp ||
+                      current is EmailVerifying ||
+                      current is EmailVerificationError,
                   builder: (context, state) {
-                    if (state is AuthLoading) {
+                    if (state is SigningUp) {
                       return MainButton(onPressed: () {});
                     }
                     return MainButton(
                       onPressed: () {
                         if (_signUpFormKey.currentState!.validate()) {
-                          authCubit.signUp(_firstNameController.text,_lastNameController.text,
-                              _emailController.text, _passwordController.text);
+                          authCubit.signUp(
+                              _firstNameController.text,
+                              _lastNameController.text,
+                              _emailController.text,
+                              _passwordController.text);
                         }
                       },
                       text: "Create Account",

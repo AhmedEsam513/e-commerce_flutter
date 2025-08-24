@@ -1,5 +1,6 @@
 import 'package:e_commerce/utils/app_routes.dart';
 import 'package:e_commerce/view_models/auth_cubit/auth_cubit.dart';
+import 'package:e_commerce/views/pages/verify_email_page.dart';
 import 'package:e_commerce/views/widgets/custom_text_field_widget.dart';
 import 'package:e_commerce/views/widgets/main_button.dart';
 import 'package:flutter/material.dart';
@@ -101,22 +102,34 @@ class _LoginPageState extends State<LoginPage> {
                 BlocConsumer<AuthCubit, AuthState>(
                   bloc: authCubit,
                   listenWhen: (previous, current) =>
-                      current is AuthLoaded || current is AuthError,
+                      current is LoggedIn ||
+                      current is LoginError ||
+                      current is AuthNeedVerify,
                   listener: (context, state) {
-                    if (state is AuthLoaded) {
+                    if (state is LoggedIn) {
                       Navigator.of(context).pushNamedAndRemoveUntil(
                           AppRoutes.bottomNavbar, (route) => false);
-                    } else if (state is AuthError) {
+                    } else if (state is AuthNeedVerify) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => BlocProvider.value(
+                            value: authCubit,
+                            child: VerifyEmailPage(),
+                          ),
+                        ),
+                      );
+                    } else if (state is LoginError) {
                       ScaffoldMessenger.of(context)
                           .showSnackBar(SnackBar(content: Text(state.message)));
                     }
                   },
                   buildWhen: (previous, current) =>
-                      current is AuthLoading ||
-                      current is AuthError ||
-                      current is AuthLoaded,
+                      current is LoggingIn ||
+                      current is LoggedIn ||
+                      current is LoginError ||
+                      current is AuthNeedVerify,
                   builder: (context, state) {
-                    if (state is AuthLoading) {
+                    if (state is LoggingIn) {
                       return MainButton(onPressed: () {});
                     }
 

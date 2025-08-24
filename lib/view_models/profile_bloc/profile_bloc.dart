@@ -71,6 +71,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<DeleteUserEvent>((event, emit) async {
       emit(LoggingOut());
       try {
+        await _fireStoreServices.deleteData(ApiPaths.user(_currentUserId));
         await _authServicesObject.deleteUser();
         emit(LoggedOut());
       } catch (e) {

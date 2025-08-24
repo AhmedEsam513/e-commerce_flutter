@@ -10,10 +10,13 @@ abstract class AuthServices {
   Future<void> logOut();
 
   Future<void> deleteUser();
+
+  Future<bool> isEmailVerified();
+
+  Future<void> sendEmailVerification();
 }
 
 class AuthServicesImpl implements AuthServices {
-
   final _authServices = FirebaseAuth.instance;
 
   @override
@@ -55,5 +58,16 @@ class AuthServicesImpl implements AuthServices {
   @override
   Future<void> deleteUser() async {
     await _authServices.currentUser!.delete();
+  }
+
+  @override
+  Future<bool> isEmailVerified() async {
+    await _authServices.currentUser!.reload();
+    return _authServices.currentUser!.emailVerified;
+  }
+
+  @override
+  Future<void> sendEmailVerification() async {
+    await _authServices.currentUser!.sendEmailVerification();
   }
 }

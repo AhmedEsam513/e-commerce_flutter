@@ -4,8 +4,10 @@ class UserModel {
   final String lastName;
   final String email;
   final String createdAt;
-  final List<String>? favorites;
-  final String? profilePhotoUrl;
+  List<String>? favorites;
+  String? profilePhotoUrl;
+  bool? isEmailVerified;
+
   //final String password;
 
   UserModel({
@@ -16,6 +18,7 @@ class UserModel {
     required this.createdAt,
     this.favorites,
     this.profilePhotoUrl,
+    this.isEmailVerified = false,
     //required this.password,
   });
 
@@ -28,6 +31,7 @@ class UserModel {
       "createdAt": createdAt,
       "favorites": favorites,
       "profilePhotoUrl": profilePhotoUrl,
+      "isEmailVerified":isEmailVerified
     };
   }
 
@@ -39,7 +43,8 @@ class UserModel {
       email: data["email"],
       createdAt: data["createdAt"],
       favorites: List<String>.from(data["favorites"]?? []),
-      profilePhotoUrl: data["profilePhotoUrl"]
+      profilePhotoUrl: data["profilePhotoUrl"],
+      isEmailVerified: data["isEmailVerified"]
     );
   }
 }

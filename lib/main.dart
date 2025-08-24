@@ -22,36 +22,33 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) {
-        final mainCubit = AuthCubit();
-        mainCubit.getUser();
-        return mainCubit;
-      },
+      create: (context) => AuthCubit()..checkAuthStatus(),
       child: Builder(builder: (context) {
         return BlocBuilder<AuthCubit, AuthState>(
           bloc: BlocProvider.of<AuthCubit>(context),
           buildWhen: (previous, current) =>
-              current is AuthLoaded ||
-              current is AuthError ||
-              current is AuthLoading ||
-              current is NoUserFoundState,
+              current is AuthenticatedUser ||
+              current is CheckingAuthStatusError ||
+              current is CheckingAuthStatus ||
+              current is UnauthenticatedUser ||
+              current is UnverifiedUser,
           builder: (context, state) {
             return MaterialApp(
               debugShowCheckedModeBanner: false,
               title: 'E-commerce App',
               theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-                useMaterial3: true,
-                scaffoldBackgroundColor: Colors.white,
-                appBarTheme: AppBarTheme(backgroundColor: Colors.white)
-              ),
+                  colorScheme:
+                      ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+                  useMaterial3: true,
+                  scaffoldBackgroundColor: Colors.white,
+                  appBarTheme: AppBarTheme(backgroundColor: Colors.white)),
               //home: const BottomNavbar(),
               //initialRoute: AppRoutes.logIn,
-              home: state is AuthLoaded
+              home: state is AuthenticatedUser
                   ? BottomNavbar()
-                  : state is AuthLoading
+                  : state is CheckingAuthStatus
                       ? LoadingPage()
-                      : LoginPage(),
+                      :LoginPage(),
               onGenerateRoute: AppRouter.onGenerateRoute,
             );
           },

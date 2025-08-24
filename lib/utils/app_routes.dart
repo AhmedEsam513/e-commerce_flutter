@@ -8,6 +8,7 @@ class AppRoutes {
   static const String logIn = "/log-in";
   static const String signUp = "/sign-up";
   static const String editProfile = "/edit-profile";
+  static const String verifyEmail = "/verify-email";
 
 
 
